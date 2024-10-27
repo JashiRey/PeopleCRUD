@@ -18,7 +18,7 @@ export default function Page() {
         <h2 className="text-2xl font-bold text-white">Create, Read, Update and Delete</h2>
       </div>
       <div className="flex gap-4">
-        <p className="text-lg font-bold text-white">by <a href="https://github.com/Jasielongas777" target="_blank" rel="noopener noreferrer">Jasiel Corral</a></p>
+        <p className="text-lg font-bold text-white">by <a href="https://github.com/JashiRey" target="_blank" rel="noopener noreferrer">Jasiel Corral</a></p>
       </div>
 
       <div className="flex gap-4">
