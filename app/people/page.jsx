@@ -51,6 +51,7 @@ export default function Page() {
       return alert('Favor de llenar todos los campos');
     }
     const personaModificada = {
+      id: personaSeleccionada.id,
       nombre: nombre.current.value,
       apellido: apellido.current.value,
       edad: edad.current.value,
@@ -60,7 +61,7 @@ export default function Page() {
     };
   
     const nuevasPersonas = personas.map(p =>
-      p.nombre === personaSeleccionada.nombre ? personaModificada : p
+      p.id === personaSeleccionada.id ? personaModificada : p
     );
     setPersonas(nuevasPersonas);
 
@@ -129,6 +130,7 @@ export default function Page() {
             }
             
             const newPerson = {
+              id: personas.length + 1,
               nombre: nombre_agg.current.value,
               apellido: apellido_agg.current.value,
               edad: edad_agg.current.value,
@@ -185,6 +187,7 @@ export default function Page() {
                   padding: '10px',
                   borderRadius: '5px'
                 }}>
+                <span className="text-white">ID: {persona.id}</span>
                 <span className="text-white">Name: {persona.nombre}</span>
                 <span className="text-white">Last Name: {persona.apellido}</span>
                 <span className="text-white">Age: {persona.edad}</span>
@@ -231,6 +234,7 @@ export default function Page() {
                 padding: '10px',
                 borderRadius: '5px'
               }}>
+                <span className="text-white">ID: {persona.id}</span>
                 <span className="text-white">Name: {persona.nombre}</span>
                 <span className="text-white">Last Name: {persona.apellido}</span>
                 <span className="text-white">Age: {persona.edad}</span>
@@ -294,58 +298,82 @@ export default function Page() {
             </dialog>
             </div>
       </div>
-        
-        {/* Delete */}
-        <div>
-          <button className="btn btn-primary glass w-full" onClick={() => {
-            if (evaluarArray()) {
-              alert('There are no people to delete');
-            } else {
-                document.getElementById('modal_delete').showModal();
-            }
-          }}>
-            Delete People
-        </button>
-          <dialog id="modal_delete" className="modal">
-          <div className="modal-box bg-neutral">
-            <h3 className="font-bold text-lg text-white">Delete People</h3>
-            {mostrarPersonas &&(
-              personas.map((persona, index) => (
-              <div key={index} className="flex flex-col gap-2 mt-3"
-              style={{
-                backgroundImage: `linear-gradient(to left, ${persona.color}, transparent)`,
-                border: '1px solid',
-                borderColor: persona.color,
-                padding: '10px',
-                borderRadius: '5px'
-              }}>
-                <span className="text-white">Name: {persona.nombre}</span>
-                <span className="text-white">Last Name: {persona.apellido}</span>
-                <span className="text-white">Age: {persona.edad}</span>
-                <span className="text-white">Email: {persona.email}</span>
-                <span className="text-white">Phone: {persona.telefono}</span>
-                <span className="text-white">Color: {persona.color}</span>
-                <div className="flex gap-2">
-            </div>
-                  <button className="btn btn-outline btn-error glass" onClick={() => {
-                    const newPeople = personas.filter(p => p.nombre !== persona.nombre);
-                    setPersonas(newPeople);
-                  }}>Delete</button>
-                  </div>
-            ))
-          )}
-          <div className="modal-action">
-            <form method="dialog" className='flex gap-3'>
-              <div className="btn btn-success btn-outline glass" onClick={() => setMostrarPersonas(true)} >Read</div> 
-              <button className="btn btn-outline btn-error glass" onClick={() => {setMostrarPersonas(false)}}>Close</button>
-            </form>
-          </div>
 
+      {/* Delete */}
+<div>
+  <button
+    className="btn btn-primary glass w-full"
+    onClick={() => {
+      if (evaluarArray()) {
+        alert('There are no people to delete');
+      } else {
+        document.getElementById('modal_delete').showModal();
+      }
+    }}
+  >
+    Delete People
+  </button>
+  <dialog id="modal_delete" className="modal">
+    <div className="modal-box bg-neutral">
+      <h3 className="font-bold text-lg text-white">Delete People</h3>
+      {mostrarPersonas &&
+        personas.map((persona, index) => (
+          <div
+            key={index}
+            className="flex flex-col gap-2 mt-3"
+            style={{
+              backgroundImage: `linear-gradient(to left, ${persona.color}, transparent)`,
+              border: '1px solid',
+              borderColor: persona.color,
+              padding: '10px',
+              borderRadius: '5px',
+            }}
+          >
+            <span className="text-white">ID: {persona.id}</span>
+            <span className="text-white">Name: {persona.nombre}</span>
+            <span className="text-white">Last Name: {persona.apellido}</span>
+            <span className="text-white">Age: {persona.edad}</span>
+            <span className="text-white">Email: {persona.email}</span>
+            <span className="text-white">Phone: {persona.telefono}</span>
+            <span className="text-white">Color: {persona.color}</span>
+            <div className="flex gap-2"></div>
+            <button
+              className="btn btn-outline btn-error glass"
+              onClick={() => {
+                const updatedPeople = personas
+                  .filter((p) => p.id !== persona.id) // Filtra la persona eliminada
+                  .map((p, i) => ({ ...p, id: i + 1 })); // Reasigna los IDs de las personas restantes
+
+                setPersonas(updatedPeople); // Actualiza el estado con la nueva lista y IDs
+              }}
+            >
+              Delete
+            </button>
           </div>
-          </dialog>
-        </div>  
+        ))}
+      <div className="modal-action">
+        <form method="dialog" className="flex gap-3">
+          <div
+            className="btn btn-success btn-outline glass"
+            onClick={() => setMostrarPersonas(true)}
+          >
+            Read
+          </div>
+          <button
+            className="btn btn-outline btn-error glass"
+            onClick={() => {
+              setMostrarPersonas(false);
+            }}
+          >
+            Close
+          </button>
+        </form>
+      </div>
     </div>
-    </div> 
+  </dialog>
+</div>
+</div>
+</div>
     <a href="/"><button className='btn btn-wide bg-primary-content relative top-20'>Back</button></a>    
     </main>
   );
