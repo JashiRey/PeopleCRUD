@@ -23,33 +23,35 @@ export default function Page() {
   const evaluarArray = () => personas.length === 0;
 
   const guardarCambios = () => {
-    if (isNaN(nombre.current.value) === false || isNaN(apellido.current.value) === false) {
-      return alert('El nombre y apellido no pueden ser números y tienen que estar llenos');
+    if (isNaN(nombre_agg.current.value) === false || isNaN(apellido_agg.current.value) === false) {
+      return alert('Name and last name cannot be numbers and must be filled');
     }
-    if (nombre.current.value.length < 3 || apellido.current.value.length < 3) {
-      return alert('El nombre y apellido deben tener al menos 3 caracteres');
+    if (nombre_agg.current.value.length < 3 || apellido_agg.current.value.length < 3) {
+      return alert('Name and last name must be at least 3 characters long');
     }
-    if (edad.current.value < 0 || edad.current.value === '') {
-      return alert('La edad no puede ser menor a 0 y tiene que contener un número');
+    if (edad_agg.current.value < 0 || edad_agg.current.value === '') {
+      return alert('Age cannot be less than 0 and must contain a number');
     }
-    if (isNaN(edad.current.value)) {
-      return alert('La edad debe ser un número');
+    if (isNaN(edad_agg.current.value)) {
+      return alert('Age must be a number');
     }
-    if (email.current.value.indexOf('@') === -1 || email.current.value.indexOf('.') === -1) {
-      return alert('El email no es válido. Debe contener un @ y un .');
+    if (email_agg.current.value.indexOf('@') === -1 || email_agg.current.value.indexOf('.') === -1) {
+      return alert('Email is not valid. It must contain an @ and a .');
     }
-    if (telefono.current.value.length < 10) {
-      return alert('El teléfono debe tener al menos 10 dígitos');
+    if (telefono_agg.current.value.length < 10) {
+      return alert('Phone must be at least 10 digits long');
     }
-    if (telefono.current.value.length > 10) {
-      return alert('El teléfono no puede tener más de 10 dígitos');
+    if (telefono_agg.current.value.length > 10) {
+      return alert('Phone cannot be more than 10 digits long');
     }
-    if (isNaN(telefono.current.value)) {
-      return alert('El teléfono debe ser un número');
+    if (isNaN(telefono_agg.current.value)) {
+      return alert('Phone must be a number');
     }
-    if (nombre.current.value === '' || apellido.current.value === '' || edad.current.value === '' || email.current.value === '' || telefono.current.value === '') {
-      return alert('Favor de llenar todos los campos');
+    if (nombre_agg.current.value === '' || apellido_agg.current.value === '' || edad_agg.current.value === '' || email_agg.current.value === '' || telefono_agg.current.value === '') {
+      return alert('Please fill in all fields');
     }
+
+    
     const personaModificada = {
       id: personaSeleccionada.id,
       nombre: nombre.current.value,
@@ -245,7 +247,7 @@ export default function Page() {
             </div>
                   <button className="btn btn-outline btn-success glass" onClick={() => {
                     modalRef.current.showModal();
-                    setPersonaSeleccionada(persona);;
+                    setPersonaSeleccionada(persona);
                     nombre.current.value = persona.nombre;
                     apellido.current.value = persona.apellido;
                     edad.current.value = persona.edad;
@@ -340,11 +342,7 @@ export default function Page() {
             <button
               className="btn btn-outline btn-error glass"
               onClick={() => {
-                const updatedPeople = personas
-                  .filter((p) => p.id !== persona.id) // Filtra la persona eliminada
-                  .map((p, i) => ({ ...p, id: i + 1 })); // Reasigna los IDs de las personas restantes
-
-                setPersonas(updatedPeople); // Actualiza el estado con la nueva lista y IDs
+                setPersonas(personas.filter((p) => p.id !== persona.id))
               }}
             >
               Delete
@@ -353,8 +351,8 @@ export default function Page() {
         ))}
       <div className="modal-action">
         <form method="dialog" className="flex gap-3">
-          <div
-            className="btn btn-success btn-outline glass"
+            <div
+              className="btn btn-success btn-outline glass"
             onClick={() => setMostrarPersonas(true)}
           >
             Read
